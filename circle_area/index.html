@@ -1,0 +1,125 @@
+<html lang="en">
+<head>
+  <title>Area of a circle visualization</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0"/>
+</head>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.16.3/math.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
+<script type="text/x-mathjax-config"> MathJax.Hub.Config({ extensions: ["tex2jax.js"], jax: ["input/TeX","output/HTML-CSS"], tex2jax: { inlineMath: [["\(","\)"]] } }); </script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheet.css">
+
+<body>
+  <div class = 'container text-center'>
+    <div class = 'my-3'> <h4> <u>Visualisation</u>: Area of a Circle </h4> </div>
+    <div> <canvas id = 'canvas' width = '600' height = '600' style = 'border:1px solid #000000;'></canvas> </div>
+    <div class = 'mt-4'> Radius of the circle = <input id = 'radius_input' type = 'number' min = '0' max = '100' value = '80'></input> </div>
+    <div class = 'mt-2'> Number of divisions = <input id = 'divisions_input' type = 'number' min = '1' max = '80' value = '50'></input> </div>
+    <div class = 'mt-4'>
+      <button id = 'update_btn' class = 'btn btn-primary'> Update </button>
+      <button id = 'animate_btn' class = 'btn btn-primary'> Animate </button>
+    </div>
+  </div>
+</body>
+
+<script>
+
+$(document).ready(function(){ setup(); })
+
+var num_divisions = 200, num_circles = 50, r = 80;
+var canvas = d3.select("#canvas"),
+    canvas_width = parseInt(canvas.attr('width')),
+    canvas_height = parseInt(canvas.attr('height')),
+    ctx = canvas.node().getContext("2d"),
+    stroke_clr = "rgb(0, 0, 0)",
+    fill_clr = "rgb(255, 255, 255)",
+    lineWidth = 2;
+
+var tl = new TimelineLite(),
+    tween = { unfoldFactor: 1 },
+    duration = 4;
+
+ctx.lineWidth = lineWidth;
+ctx.strokeStyle = stroke_clr;
+ctx.fillStyle = fill_clr;
+
+/**************************************************************/
+
+function setup(){
+  tl.to(tween, duration, {
+    unfoldFactor: 0,
+    ease: Power0.easeNone,
+    onUpdate: function(){ draw(tween.unfoldFactor) },
+    onComplete: function(){ tl.pause() }
+  })
+  tl.pause();
+  tl.progress(1); tl.progress(0);
+};
+
+/**************************************************************/
+
+function draw(unfoldFactor){
+  ctx.fillRect(0, 0, canvas_width, canvas_height);
+  var dR = r/num_circles;
+  ctx.lineWidth = dR - 0.5;
+
+  for(var i = 0; i < num_circles; i++){
+    var x = 300, y = 300 + (i+0.5)*dR,
+        dTheta = Math.PI*unfoldFactor/num_divisions,
+        dLen = Math.PI*(i+0.5)*dR/num_divisions, theta = 0;
+
+    for(j = 0; j <= num_divisions; j++){
+      tempX = x + dLen*Math.cos(theta);
+      tempY = y - dLen*Math.sin(theta);
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(tempX, tempY);
+      ctx.stroke();
+      x = tempX; y = tempY; theta += dTheta;
+    }
+
+    x = 300; y = 300 + (i+0.5)*dR; theta = 0;
+    for(j = 0; j <= num_divisions; j++){
+      tempX = x - dLen*Math.cos(theta);
+      tempY = y - dLen*Math.sin(theta);
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(tempX, tempY);
+      ctx.stroke();
+      x = tempX; y = tempY; theta += dTheta;
+    }
+
+  }
+}
+
+/**************************************************************/
+
+d3.select('#animate_btn').on('click', animate);
+function animate(){
+  if(tween.unfoldFactor > 0.5){ tl.play(); } else { tl.reverse(); }
+}
+
+/**************************************************************/
+
+d3.select('#update_btn').on('click', update);
+function update(){
+  d3.select('#radius_input').each(function(){ r = this.value });
+  d3.select('#divisions_input').each(function(){ num_circles = this.value });
+
+  tl.progress(0); draw(1);
+}
+
+</script>
