@@ -26,6 +26,10 @@
   <div class = 'container text-center'>
     <div class = 'my-3'> <h4> <u>Visualisation</u>: Area of a Circle </h4> </div>
     <div> <canvas id = 'canvas' width = '600' height = '600' style = 'border:1px solid #000000;'></canvas> </div>
+
+    <div class = 'mt-4'> <span id = 'area_circle' class = 'mr-3'></span> </div>
+    <div class = 'mt-4'> <span id = 'area_triangle' class = 'mr-3'></span> <span id = 'area_traingle_circle'></span> </div>
+
     <div class = 'mt-4'> Radius of the circle = <input id = 'radius_input' type = 'number' min = '0' max = '100' value = '80'></input> </div>
     <div class = 'mt-2'> Number of divisions = <input id = 'divisions_input' type = 'number' min = '1' max = '80' value = '50'></input> </div>
     <div class = 'mt-4'>
@@ -36,8 +40,6 @@
 </body>
 
 <script>
-
-$(document).ready(function(){ setup(); })
 
 var num_divisions = 200, num_circles = 50, r = 80;
 var canvas = d3.select("#canvas"),
@@ -58,6 +60,8 @@ ctx.fillStyle = fill_clr;
 
 /**************************************************************/
 
+$(document).ready(function(){ setup(); })
+
 function setup(){
   tl.to(tween, duration, {
     unfoldFactor: 0,
@@ -67,6 +71,10 @@ function setup(){
   })
   tl.pause();
   tl.progress(1); tl.progress(0);
+
+  d3.select('#area_circle').html('\( Area\\  of\\  Circle = \\pi*r^2 \)');
+  d3.select('#area_triangle').html('\( Area\\  of\\  Triangle = \\frac{1}{2}*base*height = \\frac{1}{2}*2\\pi r*r \)');
+  MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 };
 
 /**************************************************************/
