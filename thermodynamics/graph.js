@@ -18,6 +18,10 @@ function createGraph(){
   origin.append('g').call( d3.axisBottom(xScale) );
   origin.append('g').call( d3.axisLeft(yScale) );
 
+  origin.append('text').attrs({ class: 'axes_label', 'transform': 'translate(' +xScale(0.8)+ ',' +30+ ')' }).text('Specific Volume →')
+  origin.append('g').attrs({ class: 'axes_label', 'transform': 'translate(' +-40+ ',' +yScale(250)+ ') rotate(-90)' })
+        .append('text').text('Pressure →');
+
   origin.append('path').attrs({ id: 'graph_path' }).styles({ 'stroke': '#03a9f4', 'stroke-width': 2, 'fill': 'none' });
 
   origin.append('circle').attrs({ id: 'p1_circle', r: 4 }).styles({ 'fill': 'red', 'cursor': 'hand' }).data([{ color: 'red', state: state_1 }]);
@@ -69,24 +73,24 @@ function updateGraph(){
 function createEvents(){
   d3.select('#p1_circle1').call(d3.drag().on('drag', function(){
     var temp = yScale.invert(d3.event.y);
-    state_1.p = temp; compute(); updateGraph();
+    state_1.p = temp; compute(); updateInputs(); updateGraph();
   }))
 
   d3.select('#p1_circle2').call(d3.drag().on('drag', function(){
     var temp = xScale.invert(d3.event.x);
-    state_1.v = temp; compute(); updateGraph();
+    state_1.v = temp; compute(); updateInputs(); updateGraph();
   }))
 
   d3.select('#p2_circle1').call(d3.drag().on('drag', function(){
     var temp = yScale.invert(d3.event.y);
     new_state = {};
-    new_state.p = temp; compute(); updateGraph();
+    new_state.p = temp; compute(); updateInputs(); updateGraph();
   }))
 
   d3.select('#p2_circle2').call(d3.drag().on('drag', function(){
     var temp = xScale.invert(d3.event.x);
     new_state = {};
-    new_state.v = temp; compute(); updateGraph();
+    new_state.v = temp; compute(); updateInputs(); updateGraph();
   }))
 
   d3.select('#p1_circle').on('click', function(){
