@@ -71,5 +71,27 @@
       }
     }
 
+    if(process == 'Isothermal'){
+      for(par in state_1_known){ state_1_checkBox_active[par] = true; }
+      for(par in state_2_known){ state_2_checkBox_active[par] = true; }
+
+      if(state_1_known_count == 2){
+        for(par in state_1_known){ if(state_1_known[par] == false){ state_1_checkBox_active[par] = false; } };
+        if(state_2_known_count == 1){
+          for(par in state_2_known){ if(state_2_known[par] == false){ state_2_checkBox_active[par] = false; } };
+        }
+      }
+
+      if(state_2_known_count == 2){
+        for(par in state_2_known){ if(state_2_known[par] == false){ state_2_checkBox_active[par] = false; } }
+        if(state_1_known_count == 1){
+          for(par in state_1_known){ if(state_1_known[par] == false){ state_1_checkBox_active[par] = false; } };
+        }
+      }
+
+      if(state_1_known.T == true || (state_1_known.p == true && state_1_known.v == true)){ state_2_checkBox_active.T = false; }
+      if(state_2_known.T == true || (state_2_known.p == true && state_2_known.v == true)){ state_1_checkBox_active.T = false; }
+    }
+
     update_Visibility_CheckBoxes();
   }
