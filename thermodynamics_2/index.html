@@ -26,8 +26,10 @@
 <script src="gas_law.js"></script>
 <script src="adiabatic_process.js"></script>
 <script src="isothermal_process.js"></script>
+<script src="isobaric_process.js"></script>
 <script src="input_box.js"></script>
 <script src="check_box.js"></script>
+<script src="graph.js"></script>
 
 <body>
   <div class = 'container text-center'>
@@ -60,14 +62,36 @@ var params = {
 /********************************************************************************/
 // Processes
 
-var processs_1 = new adiabatic_process();
-var processs_2 = new isothermal_process();
+var process_1 = new adiabatic_process();
+var process_2 = new isothermal_process();
+var process_3 = new isobaric_process();
 var process_current = null;
 
 function assign_Process(process){
   process_current = process;
-  inputBox.assignValues(process_current); inputBox.activate(process_current);
+  inputBox.assignValues(process_current); inputBox.activate(process_current); inputBox.events(process_current);
   checkBox.check(process_current); checkBox.activate(process_current); checkBox.events(process_current);
+  graph.process = process_current; graph.create(); graph.events(); graph.setup(); graph.update();
+
+  if(process_current.process == 'Adiabatic'){
+    d3.select('#processHeading').html('Adiabatic Process');
+    d3.select('#processDescription').html('Adiabatic Processes are thermodynamic processes where there is no heat exchange between the system and the surroundings during the process.');
+    d3.select('#processFormula').html('$$ pv^γ = constant $$');
+  }
+
+  if(process_current.process == 'Isothermal'){
+    d3.select('#processHeading').html('Isothermal Process');
+    d3.select('#processDescription').html('Isothermal Processes are thermodynamic processes where the temperature remains constant during the process.');
+    d3.select('#processFormula').html('$$ T = constant $$');
+  }
+
+  if(process_current.process == 'Isobaric'){
+    d3.select('#processHeading').html('Isobaric Process');
+    d3.select('#processDescription').html('Isobaric Processes are thermodynamic processes where the pressure remains constant during the process.');
+    d3.select('#processFormula').html('$$ p = constant $$');
+  }
+
+  MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
 
 /********************************************************************************/
@@ -84,10 +108,11 @@ function setup(){
         d3.select(this).attrs({ min: params[par].min, max: params[par].max, step: params[par].step });
       })
 
-      assign_Process(processs_1);
+      assign_Process(process_1);
       d3.select('#process_Input').on('change', function(){
-        if(this.value == 'Adiabatic'){ assign_Process(processs_1); }
-        if(this.value == 'Isothermal'){ assign_Process(processs_2); }
+        if(this.value == 'Adiabatic'){ assign_Process(process_1); }
+        if(this.value == 'Isothermal'){ assign_Process(process_2); }
+        if(this.value == 'Isobaric'){ assign_Process(process_3); }
       })
 
     })

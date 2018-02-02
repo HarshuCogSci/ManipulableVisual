@@ -29,8 +29,9 @@ checkBox.events = function(process){
     var state = d3.select(this).attr('state');
     var d = d3.select(this).attr('data');
     process[state].checkBox.checked[d] = !process[state].checkBox.checked[d];
-    process.decide_ux();
+    process.decide_ux(); process.compute();
     checkBox.activate(process);
-    inputBox.activate(process);
+    inputBox.activate(process); inputBox.assignValues(process_current);
+    graph.update();
   })
 }

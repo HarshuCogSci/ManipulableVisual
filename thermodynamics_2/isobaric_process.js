@@ -1,9 +1,9 @@
 /********************************************************************************/
 // Isothermal Process
 
-function isothermal_process(){
-  this.process = 'Isothermal';
-  this.stroke = 'orange';
+function isobaric_process(){
+  this.process = 'Isobaric';
+  this.stroke = 'green';
 
   // State 1 variables
   this.state_1 = {};
@@ -41,7 +41,7 @@ function isothermal_process(){
 /********************************************************************************/
 // Update all the checkbox and inputbox varaibles
 
-isothermal_process.prototype.decide_ux = function(){
+isobaric_process.prototype.decide_ux = function(){
   this.updateCounts();
 
   // Check boxes
@@ -62,14 +62,14 @@ isothermal_process.prototype.decide_ux = function(){
   }
 
   // Making check boxes inactive
-  if(this.state_1.checkBox.checked.T || (this.state_1.checkBox.checked.p && this.state_1.checkBox.checked.v)){ this.state_2.checkBox.active.T = false; }
-  if(this.state_2.checkBox.checked.T || (this.state_2.checkBox.checked.p && this.state_2.checkBox.checked.v)){ this.state_1.checkBox.active.T = false; }
+  if(this.state_1.checkBox.checked.p || (this.state_1.checkBox.checked.T && this.state_1.checkBox.checked.v)){ this.state_2.checkBox.active.p = false; }
+  if(this.state_2.checkBox.checked.p || (this.state_2.checkBox.checked.T && this.state_2.checkBox.checked.v)){ this.state_1.checkBox.active.p = false; }
 
-  if(this.state_1.checkBox.checked.T && this.state_2.checkBox.checked.p){ this.state_2.checkBox.active.v = false; }
-  if(this.state_1.checkBox.checked.T && this.state_2.checkBox.checked.v){ this.state_2.checkBox.active.p = false; }
+  if(this.state_1.checkBox.checked.p && this.state_2.checkBox.checked.T){ this.state_2.checkBox.active.v = false; }
+  if(this.state_1.checkBox.checked.p && this.state_2.checkBox.checked.v){ this.state_2.checkBox.active.T = false; }
 
-  if(this.state_2.checkBox.checked.T && this.state_1.checkBox.checked.p){ this.state_1.checkBox.active.v = false; }
-  if(this.state_2.checkBox.checked.T && this.state_1.checkBox.checked.v){ this.state_1.checkBox.active.p = false; }
+  if(this.state_2.checkBox.checked.p && this.state_1.checkBox.checked.T){ this.state_1.checkBox.active.v = false; }
+  if(this.state_2.checkBox.checked.p && this.state_1.checkBox.checked.v){ this.state_1.checkBox.active.T = false; }
 
   // Input boxes
   for(d in params){ this.state_1.inputBox.active[d] = false; this.state_2.inputBox.active[d] = false; }
@@ -108,7 +108,7 @@ isothermal_process.prototype.decide_ux = function(){
 /********************************************************************************/
 // Update Counts
 
-isothermal_process.prototype.updateCounts = function(){
+isobaric_process.prototype.updateCounts = function(){
   this.state_1.checkBox.count = 0;
   this.state_2.checkBox.count = 0;
   for(d in params){
@@ -120,7 +120,7 @@ isothermal_process.prototype.updateCounts = function(){
 /********************************************************************************/
 // Compute the process states
 
-isothermal_process.prototype.compute = function(){
+isobaric_process.prototype.compute = function(){
   this.process_states = [];
 
   // Computing the third variable for the known state
@@ -137,21 +137,21 @@ isothermal_process.prototype.compute = function(){
     var temp_Constant = null, tempScale = null;
     var pressure_array = [], volume_array = [], temperature_array = [];
 
-    temperature_array = d3.range(num_Points).map((d,i) => { return this.known_state.values.T });
-    temp_Constant = this.known_state.values.p*this.known_state.values.v;
+    pressure_array = d3.range(num_Points).map((d,i) => { return this.known_state.values.p });
+    temp_Constant = this.known_state.values.T/this.known_state.values.v;
 
     // if pressure is the changing variable
-    if(this.parameter_changed == 'p'){
-      tempScale = d3.scaleLinear().domain([0, num_Points-1]).range([this.known_state.values.p, this.unknown_state.values.p]);
-      pressure_array = d3.range(num_Points).map((d,i) => { return tempScale(i) });
-      volume_array = numeric.div(temp_Constant, pressure_array);
+    if(this.parameter_changed == 'T'){
+      tempScale = d3.scaleLinear().domain([0, num_Points-1]).range([this.known_state.values.T, this.unknown_state.values.T]);
+      temperature_array = d3.range(num_Points).map((d,i) => { return tempScale(i) });
+      volume_array = numeric.div(temperature_array, temp_Constant);
     }
 
     // if pressure is the changing variable
     if(this.parameter_changed == 'v'){
       tempScale = d3.scaleLinear().domain([0, num_Points-1]).range([this.known_state.values.v, this.unknown_state.values.v]);
       volume_array = d3.range(num_Points).map((d,i) => { return tempScale(i) });
-      pressure_array = numeric.div(temp_Constant, volume_array);
+      temperature_array = numeric.mul(temp_Constant, volume_array);
     }
 
     // Assigning values to object variables
