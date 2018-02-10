@@ -1,0 +1,356 @@
+<!-- Working on in-progress branch -->
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+  <title>Coordinate Space</title>
+  <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0"/>
+<script src="../Libraries/d3.v4.min.js"></script>
+<script src = "../Libraries/math.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+
+<body></body>
+
+<script type="text/javascript">
+
+var color = d3.scaleLinear()
+    .domain([0, 8, 16, 24])
+    .range(["red", "green", "blue", "red"])
+	.interpolate(d3.interpolateHcl);
+
+
+/*********************************************************************/
+// DIVs
+
+d3.select("body")
+	.append("div")
+	.attr("id", "graphCanvas")
+	.style("float", "left")
+	.style("width", "80%")
+	.style("height", "100%");
+
+d3.select("body")
+	.append("div")
+	.attr("id", "equationSpace")
+	.style("float", "right")
+	.style("width", "20%")
+	.style("height", "100%");
+
+/*********************************************************************/
+// Canvas
+
+width = 0.8*innerWidth;
+height = innerHeight;
+
+d3.select("#graphCanvas")
+	.append("svg")
+	.attr("id", "canvas")
+	.attr("width", "100%")
+	.attr("height", "100%");
+
+/*********************************************************************/
+// Axes
+
+d3.select("#canvas")
+	.append("line")
+	.attr("x1", 0)
+	.attr("y1", 0.5*height)
+	.attr("x2", width)
+	.attr("y2", 0.5*height)
+	.style("stroke", "black")
+	.style("display", "none")
+
+d3.select("#canvas")
+	.append("line")
+	.attr("x1", 0.5*width)
+	.attr("y1", 0)
+	.attr("x2", 0.5*width)
+	.attr("y2", height)
+	.style("stroke", "black")
+	.style("display", "none")
+
+
+/*********************************************************************/
+// Group 1
+
+d3.select("#canvas")
+	.append("g")
+	.attr("transform", "translate(" +0.5*width+ "," +0.5*height+ ")")
+	.append("g")
+	.attr("id", "Group1");
+
+circle1_r = 0.3*height;
+
+d3.select("#Group1")
+	.append("circle")
+	.attr("r", circle1_r)
+	.attr("fill", "none")
+	.attr("stroke", "gray")
+	// .style("display", "none")
+
+d3.select("#Group1")
+	.append("line")
+	.attr("x1", 0)
+	.attr("y1", 0)
+	.attr("x2", circle1_r)
+	.attr("y2", 0)
+	.style("stroke", "black")
+	.style("display", "none")
+
+/*********************************************************************/
+// Group 2
+
+d3.select("#Group1")
+	.append("g")
+	.attr("transform", "translate(" +circle1_r+ ",0) rotate(0)")
+	.append("g")
+	.attr("id", "Group2");
+
+circle2_r = 0.1*height;
+
+d3.select("#Group2")
+	.append("circle")
+	.attr("r", circle2_r)
+	.attr("fill", "none")
+	.attr("stroke", "gray")
+	// .style("display", "none")
+
+d3.select("#Group2")
+	.append("circle")
+	.attr("r", 2)
+	.attr("cx", circle2_r)
+	.attr("cy", 0)
+	.style("fill", "red")
+	// .style("display", "none")
+
+d3.select("#Group2")
+	.append("line")
+	.attr("x1", 0)
+	.attr("y1", 0)
+	.attr("x2", circle2_r)
+	.attr("y2", 0)
+	.style("stroke", "gray")
+	.style("display", "none")
+
+/*********************************************************************/
+// Path
+
+var curve = d3.line()
+			.x(function(d) {return(d.x);})
+			.y(function(d) {return(d.y);})
+			.curve(d3.curveBasis);
+
+pathString = [];
+pathString_1 = [];
+d3.select("#canvas")
+	.append("g")
+	.attr("transform", "translate(" +0.5*width+ "," +0.5*height+ ")")
+	.append("path")
+	.attr("id", "curvePath")
+	.style("fill", "none")
+	.style("stroke", "red")
+
+/*********************************************************************/
+// update Path
+
+angleToRotate_1 = null;
+angleToRotate_2 = null;
+counter = 0;
+
+function updatePaths(){
+
+	d3.select("#Group1").attr("transform", "rotate(" +(-angleToRotate_1)+ ")");
+	d3.select("#Group2").attr("transform", "rotate(" +(-angleToRotate_2)+ ")");
+
+	temp_x = circle1_r*Math.cos(angleToRotate_1*Math.PI/180) + circle2_r*Math.cos((angleToRotate_2+angleToRotate_1)*Math.PI/180);
+	temp_y = circle1_r*Math.sin(angleToRotate_1*Math.PI/180) + circle2_r*Math.sin((angleToRotate_2+angleToRotate_1)*Math.PI/180);
+	temp_y = -temp_y;
+
+	pathString.push({x: temp_x, y: temp_y});
+	if(pathString.length > 1){
+		d3.select("#canvas")
+			.append("g")
+			.attr("transform", "translate(" +0.5*width+ "," +0.5*height+ ")")
+			.append("path")
+			.attr("class", "curvePath")
+			.attr("d", curve(pathString))
+			.style("fill", "none")
+			// .style("stroke", d3.interpolateViridis( ((counter%100)/100) ))
+			.style("stroke", color(counter%24))
+			.style("stroke-width", 4)
+			// .style("stroke", "red");
+
+		counter++;
+		temp_array = [];
+		temp_array.push(pathString[pathString.length-1]);
+		pathString = temp_array;
+	}
+
+	d3.select("#curvePath").attr("d", curve(pathString));
+
+}
+
+/*********************************************************************/
+// Timer
+
+speedRPM_1 = 40;
+speedRPM_2 = 40;
+timer = d3.timer(callback);
+direction = false;
+
+previousTime = 0;
+temp_time = 0;
+
+function callback(time){
+
+	time += previousTime;
+	temp_time = time;
+
+	angleToRotate_1 = ((time/1000)*(speedRPM_1*360/60));
+	// angleToRotate_1 = -angleToRotate_1;		// For Clockwise
+
+	angleToRotate_2 = ((time/1000)*(speedRPM_2*360/60));
+	if(direction){
+		angleToRotate_2 = -angleToRotate_2;		// For Clockwise
+	}
+
+	updatePaths();
+}
+
+function pauseTimer(){
+	timer.stop();
+	previousTime = temp_time;
+}
+
+function stopTimer(){
+	timer.stop();
+	previousTime = 0;
+}
+
+stopTimer();
+
+/*********************************************************************/
+// Slider 1
+
+div = d3.select("#equationSpace")
+		.append("div")
+		.style("margin", "2.5%")
+		.style("border-style", "solid")
+		.style("border-width", "thin")
+		.style("border-radius", "15px")
+
+div.append("div")
+	.style("text-align", "center")
+	.style("padding", "2.5%")
+	.append("text")
+	.attr("id", "Text_1")
+	.text("Bigger Circle RPM : " + speedRPM_1);
+
+div.append("div")
+	.style("text-align", "center")
+	.style("padding", "2.5%")
+	.append("input")
+	.attr("id", "Slider_1")
+	.attr("type", "range")
+	.attr("min", 0)
+	.attr("max", 100)
+	.attr("step", 1)
+	.attr("value", speedRPM_1)
+	.on("change", function(){
+		speedRPM_1 = this.value;
+		d3.select("#Text_1").text("Circle 1 RPM : " + speedRPM_1);
+	})
+
+/*********************************************************************/
+// Slider 2
+
+div = d3.select("#equationSpace")
+		.append("div")
+		.style("margin", "2.5%")
+		.style("border-style", "solid")
+		.style("border-width", "thin")
+		.style("border-radius", "15px")
+
+div.append("div")
+	.style("text-align", "center")
+	.style("padding", "2.5%")
+	.append("text")
+	.attr("id", "Text_2")
+	.text("Smaller Circle RPM : " + speedRPM_2);
+
+div.append("div")
+	.style("text-align", "center")
+	.style("padding", "2.5%")
+	.append("input")
+	.attr("id", "Slider_2")
+	.attr("type", "range")
+	.attr("min", 0)
+	.attr("max", 100)
+	.attr("step", 1)
+	.attr("value", speedRPM_2)
+	.on("change", function(){
+		speedRPM_2 = this.value;
+		d3.select("#Text_2").text("Circle 2 RPM : " + speedRPM_2);
+	})
+
+/*********************************************************************/
+// Buttons
+
+div = d3.select("#equationSpace")
+		.append("div");
+
+div.append("input")
+	.attr("type", "checkbox")
+	.attr("name", "direction")
+	.attr("value", "direction")
+	.on("change", function(){
+		console.log(this.checked);
+		direction = this.checked;
+	})
+
+div.append("text")
+	.text("Anti-clockwise");
+
+div = d3.select("#equationSpace")
+		.append("div");
+
+simulationActive = false;
+div.append("div")
+	.style("float", "left")
+	.style("padding", "5%")
+	.append("button")
+	.attr("id", "btn1")
+	.text("Start")
+	.on("click", function(){
+		simulationActive = !simulationActive;
+		if(simulationActive){ d3.select(this).text("Pause"); timer.restart(callback); }
+		else { d3.select(this).text("Start"); pauseTimer(); }
+	})	
+
+div.append("div")
+	.style("float", "left")
+	.style("padding", "5%")
+	.append("button")
+	.text("Clear")
+	.on("click", function(){
+		stopTimer();
+		pathString = [];
+		d3.selectAll(".curvePath").remove();
+		d3.select("#curvePath").attr("d", "");
+		simulationActive = false;
+		d3.select("#btn1").text("Start");
+		d3.select("#curvePath").attr("d", pathString);
+		d3.select("#Group1").attr("transform", "rotate(" +(-0)+ ")");
+		d3.select("#Group2").attr("transform", "rotate(" +(-0)+ ")");
+	})
+
+// Colour changes of the curves: Mapped to time or position on the canvas: Very small segments will have to be added for continuous change
+// Putting controls of speeds and radii
+// Pause() and stop() for timer should also control the simulationActive and buttons changes which should happen
+// Add a title
+// Radii scale for sliders
+// Color vaiation
+
+</script>

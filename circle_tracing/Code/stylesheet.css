@@ -1,0 +1,9 @@
+body{
+  margin: 0px;
+}
+
+text{
+	dominant-baseline: middle;
+	text-anchor: middle;
+	font-size: 20px;
+}

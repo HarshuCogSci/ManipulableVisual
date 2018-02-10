@@ -1,0 +1,193 @@
+<html lang="en">
+<head>
+<meta charset="utf-8">
+  <title>Turbine Simulation</title>
+  <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0"/>
+<script src = "../Libraries/d3.v4.min.js"></script>
+<script src = "../Libraries/math.min.js"></script>
+<script src="../Libraries/jquery-2.2.1.min.js" ></script>
+
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+
+<body></body>
+
+<script type="text/javascript">
+
+//****************************************************************************************************************************//
+//	Canvas
+  
+d3.select("body")
+  .append("svg")
+  .attr("id", "canvas")
+  .attr("height", innerHeight)
+  .attr("width", innerWidth)
+  .style("background", "black");
+
+d3.select("#canvas")
+	.append("g")
+	.attr("id", "parentGroup")
+	.attr("transform", "translate(" +(0.5*innerWidth)+ "," +(0.5*innerHeight)+ ") rotate(0)");
+
+//****************************************************************************************************************************//
+//	Groups
+
+var n = 32;
+var paths_string_array = [];
+
+for(var i = 0; i < n; i++){
+
+	d3.select("#parentGroup")
+		.append("line")
+		.attr("x1", 0)
+		.attr("y1", 0)
+		.attr("x2", 0.5*innerWidth*Math.cos(i*(2*Math.PI/n)))
+		.attr("y2", -0.5*innerWidth*Math.sin(i*(2*Math.PI/n)))
+		.style("stroke", "white")
+		.style("stroke-width", 1);
+
+	d3.select("#parentGroup")
+		.append("path")
+		.attr("id", "path_" + i)
+		.style("fill", "none")
+		.style("stroke", "white")
+		.style("stroke-width", 2)
+		.style("shape-rendering", "smooth");
+
+	paths_string_array.push("");
+}
+
+//****************************************************************************************************************************//
+//	Drag functions
+
+var drag = d3.drag();
+
+d3.select("#canvas")
+	.call(drag);
+
+drag.on("start", function(){
+
+	x = d3.event.x - 0.5*innerWidth;
+	y = d3.event.y - 0.5*innerHeight;
+
+	r = Math.sqrt(x*x + y*y);
+	ang = Math.atan2(-y,x);
+	ang = ang % (2*Math.PI/n);
+
+	for(var i = 0; i < n; i++){
+		x = r*Math.cos(ang + i*(2*Math.PI/n));
+		y = -r*Math.sin(ang + i*(2*Math.PI/n));
+
+		paths_string_array[i] += "M " +x+ " " +y+ " ";
+	}
+
+})
+
+drag.on("drag", function(){
+
+	x = d3.event.x - 0.5*innerWidth;
+	y = d3.event.y - 0.5*innerHeight;
+
+	r = Math.sqrt(x*x + y*y);
+	ang = Math.atan2(-y,x);
+	if(ang < 0) { ang += 2*Math.PI };
+	ang = ang % (2*Math.PI/n);
+
+	for(var i = 0; i < n; i++){
+		x = r*Math.cos(ang + i*(2*Math.PI/n));
+		y = -r*Math.sin(ang + i*(2*Math.PI/n));
+
+		paths_string_array[i] += "L " +x+ " " +y+ " ";
+		d3.select("#path_" + i).attr("d", paths_string_array[i]);
+	}
+
+})
+
+// d3.select("#canvas").on("mousedown", function(){
+
+// 	d3.select("#canvas").on("mousemove", function(){
+// 		x = (d3.event.x - 0.5*innerWidth);
+// 		y = (d3.event.y - 0.5*innerHeight);
+		
+// 		r = Math.sqrt(x*x + y*y);
+// 		ang = Math.atan2(-y,x);
+
+// 		for(var i = 0; i < n; i++){
+
+// 			d3.select("#parentGroup")
+// 				.append("circle")
+// 				// .attr("cx", 0.5*innerWidth + r*Math.cos(ang + i*(2*Math.PI/n)) )
+// 				// .attr("cy", 0.5*innerHeight - r*Math.sin(ang + i*(2*Math.PI/n)) )
+// 				.attr("cx", r*Math.cos(ang + i*(2*Math.PI/n)) )
+// 				.attr("cy", -r*Math.sin(ang + i*(2*Math.PI/n)) )
+// 				.attr("r", 2)
+// 				.style("fill", "lightblue")
+// 				.style("stroke", "none");
+			
+// 		}
+
+// 	})
+
+// })
+
+// d3.select("#canvas").on("mouseup", function(){
+
+// 	d3.select("#canvas").on("mousemove", null);
+
+// })
+
+// d3.select("#canvas").on("touchmove", function(){
+
+// 	x = (d3.event.targetTouches[0].clientX - 0.5*innerWidth);
+// 	y = (d3.event.targetTouches[0].clientY - 0.5*innerHeight);
+	
+// 	r = Math.sqrt(x*x + y*y);
+// 	ang = Math.atan2(-y,x);
+
+// 	for(var i = 0; i < n; i++){
+
+// 		d3.select("#parentGroup")
+// 			.append("circle")
+// 			// .attr("cx", 0.5*innerWidth + r*Math.cos(ang + i*(2*Math.PI/n)) )
+// 			// .attr("cy", 0.5*innerHeight - r*Math.sin(ang + i*(2*Math.PI/n)) )
+// 			.attr("cx", r*Math.cos(ang + i*(2*Math.PI/n)) )
+// 			.attr("cy", -r*Math.sin(ang + i*(2*Math.PI/n)) )
+// 			.attr("r", 2)
+// 			.style("fill", "lightblue")
+// 			.style("stroke", "none");
+		
+// 	}
+
+// })
+
+//****************************************************************************************************************************//
+//	Timer Functions
+
+var startTime = Date.now();
+var currentTime;
+var rpm = 30;
+var timer;
+
+function startTimer(){
+
+	startTime = Date.now();
+
+	timer = d3.timer(function(){
+
+		// rpm++;
+
+		currentTime = Date.now();
+		angleToRotate = (rpm/60)*(2*Math.PI)*((currentTime - startTime)/1000);
+		d3.select("#parentGroup")
+			.attr("transform", "translate(" +(0.5*innerWidth)+ "," +(0.5*innerHeight)+ ") rotate(" +(angleToRotate*180/Math.PI)+ ")");
+	})
+
+}
+
+function stopTimer(){
+
+	timer.stop();
+
+}
+
+</script>
