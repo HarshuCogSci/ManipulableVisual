@@ -30,10 +30,11 @@ function createControls(){
     var temp_x = i <= 5 ? i : i-5;
 
     var controls_bg = controls_g.append('circle').attrs({ cx: temp_x*temp_l, cy: temp_y, r: 25, class: 'controls_bg' });
-    var controls_text = controls_g.append('text').attrs({ x: temp_x*temp_l, y: temp_y, class: 'controls_text' }).styles({ 'dominant-baseline': 'middle', 'text-anchor': 'middle', 'font-size': '1.2em' }).text(i);
+    var controls_text = controls_g.append('text').attrs({ x: temp_x*temp_l, y: temp_y-5, class: 'controls_text' }).styles({ 'dominant-baseline': 'middle', 'text-anchor': 'middle', 'font-size': '1.2em' }).text(i);
+    var controls_text_count = controls_g.append('text').attrs({ x: temp_x*temp_l, y: temp_y+12 }).styles({ 'dominant-baseline': 'middle', 'text-anchor': 'middle', 'font-size': '0.8em', 'fill': 'gray' }).text(i);
     var controls_fg = controls_g.append('circle').attrs({ cx: temp_x*temp_l, cy: temp_y, r: 25, class: 'controls_fg' }).styles({ 'fill': 'white', 'opacity': 0 });
 
-    var temp_data = { value: i, controls_bg: controls_bg, controls_text: controls_text, controls_fg: controls_fg };
+    var temp_data = { value: i, controls_bg: controls_bg, controls_text: controls_text, controls_text_count: controls_text_count, controls_fg: controls_fg };
     controls_fg.data([ temp_data ]);
     data_controls.push(temp_data);
   }
@@ -139,4 +140,8 @@ function update_controls(){
     d3.select('#list_icon').attrs({ href: 'assets/list-empty.png' });
   }
 
+  var temp_count = d3.range(9).map(d => { return 0 });
+  // console.log(temp_count);
+  data_cells.forEach(d => { if(d.value != null){ temp_count[d.value-1]++; } })
+  temp_count.forEach((d,i) => { data_controls[i].controls_text_count.text(9-d); });
 }
