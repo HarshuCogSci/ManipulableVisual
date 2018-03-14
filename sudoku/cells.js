@@ -18,6 +18,16 @@ function createBoard(){
       var temp_ = sudoku_g.append('text').attrs({ x: (j+0.5)*box_size, y: (i+0.5)*box_size, class: 'boxes_text' }).styles({ 'dominant-baseline': 'middle', 'text-anchor': 'middle', 'font-size': 20 });
       data_cells[temp_index].box_text = temp_;
 
+      var possiblilities_g = sudoku_g.append('g').attrs({ 'transform': 'translate(' +((j+(1/6))*box_size)+ ',' +((i+(1/6))*box_size)+ ')' })
+      var temp_arr = [];
+
+      for(var z = 0; z < 9; z++){
+        var temp_x = (z%3)*(box_size/3);
+        var temp_y = parseInt(z/3)*(box_size/3);
+        temp_arr[z] = possiblilities_g.append('text').attrs({ x: temp_x, y: temp_y }).styles({ 'dominant-baseline': 'middle', 'text-anchor': 'middle', 'font-size': 11, 'fill': 'gray' });
+      }
+      data_cells[temp_index].possible_values_text = temp_arr;
+
       var temp_ = sudoku_g.append('rect').attrs({ x: j*box_size, y: i*box_size, width: box_size, height: box_size, class: 'boxes' }).styles({ fill: 'white', 'opacity': 0 });
       data_cells[temp_index].box = temp_;
     }
@@ -40,7 +50,6 @@ function createBoard(){
     sudoku_g.append('line').attrs({ y1: 0, y2: canvas_size, x1: i*box_size, x2: i*box_size }).styles({ 'stroke': 'black', 'stroke-width': bold_line_width });
   }
 
-  update_Cells();
 }
 
 // ************************************************************************************** //
@@ -60,7 +69,7 @@ function create_Events_for_Cells(){
 function click_on_empty_cell(d){
   if(d.selected == true){ current_active_cell = null; }
   else{ current_active_cell = d; }
-  update_Cells();
+  update();
 }
 
 // ************************************************************************************** //
@@ -68,15 +77,7 @@ function click_on_empty_cell(d){
 
 function click_on_fixed_cell(d){
   current_active_cell = null;
-
-  if(highlighting_allowed == true){
-    if(current_highlighting_cell != null){
-      if(current_highlighting_cell.value == d.value){ current_highlighting_cell = null; } else { current_highlighting_cell = d; }
-    } else { current_highlighting_cell = d; }
-  }
-
-  if(highlighting_allowed == false){ current_highlighting_cell = false; }
-  update_Cells();
+  update();
 }
 
 // ************************************************************************************** //
@@ -85,5 +86,5 @@ function click_on_fixed_cell(d){
 function click_on_filled_cell(d){
   if(d.selected == true){ current_active_cell = null; }
   else{ current_active_cell = d; }
-  update_Cells();
+  update();
 }

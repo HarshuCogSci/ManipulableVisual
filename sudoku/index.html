@@ -51,7 +51,7 @@ for(var i = 1; i <= 9; i++){
     var temp_square_pos = temp_x_pos*3 + temp_y_pos;
     var temp_id = (i-1)*9 + j;
 
-    var temp_object = { x: i, y: j, square: temp_square_pos, id: temp_id, fixed: false, value: null, selected: false, highlighted: false };
+    var temp_object = { x: i, y: j, square: temp_square_pos, id: temp_id, fixed: false, value: null, selected: false, highlighted: false, guesses: [] };
     data_cells.push(temp_object);
   }
 }
@@ -63,31 +63,20 @@ var canvas_width = 500, canvas_height = 800;
 var canvas_size = 400;
 d3.select('#canvas').styles({ width: canvas_width, height: canvas_height });
 
+var current_active_cell = null;
+var highlighting_allowed = false, current_highlighting_value = null;
+var guess_on = false, show_possibilities = false;
+
 var box_size = canvas_size/9;
 createBoard();
-
-// ************************************************************************************** //
-// Creating event listeners
-
-var current_active_cell = null;
-var highlighting_allowed = true, current_highlighting_cell = null;
-var guess_on = false;
-create_Events_for_Cells();
-
-// ************************************************************************************** //
-// Assigning the sudoku to data and displaying it
-
-assignSudoku(sudoku_1);
-
-// ************************************************************************************** //
-// Create controls
 
 var data_controls = [];
 createControls();
 
-// ************************************************************************************** //
-// Create controls events
+assignSudoku(sudoku_1);
+update();
 
+create_Events_for_Cells();
 createControls_Events();
 
 </script>
