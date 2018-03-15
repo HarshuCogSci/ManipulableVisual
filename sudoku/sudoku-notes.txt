@@ -2,10 +2,12 @@ SUDOKU
 
 Computation
   - Check for Wrong entries
-  - Sudoku generation algorithm
   - Highlight elements whose possible values show that they are occur only once in a row, column or square
   - Save a stack(push/pop) structure to store data state at each point and allow users to undo
   - Changing rows into columns or squares, etc.
+  - Sudoku generation algorithm
+      -- https://www.codeproject.com/Articles/23206/Sudoku-Algorithm-Generates-a-Valid-Sudoku-in
+      -- https://gamedev.stackexchange.com/questions/56149/how-can-i-generate-sudoku-puzzles
 
 UI/UX
   - Write a small write-up introducing features of the system
