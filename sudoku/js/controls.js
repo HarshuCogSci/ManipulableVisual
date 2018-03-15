@@ -9,19 +9,19 @@ function createControls(){
   // Guess icon
   var guess_g = controls_g.append('g').attrs({ transform: 'translate(' +0.25*canvas_size+ ',' +160+ ')' });
   guess_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'guess_icon_circle_bg' });
-  guess_g.append('image').attrs({ x: -0.5*icon_size, y: -0.5*icon_size, width: icon_size, height: icon_size, href: 'assets/question.svg', id: 'guess_icon' });
+  guess_g.append('image').attrs({ x: -0.5*icon_size, y: -0.5*icon_size, width: icon_size, height: icon_size, href: '../assets/question.svg', id: 'guess_icon' });
   guess_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'guess_icon_circle_fg' }).styles({ 'fill': 'white', 'opacity': 0 });
 
   // Highlight icon
   var highlight_g = controls_g.append('g').attrs({ transform: 'translate(' +0.5*canvas_size+ ',' +160+ ')' });
   highlight_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'highlight_icon_circle_bg' });
-  highlight_g.append('image').attrs({ x: -0.5*icon_size, y: -0.5*icon_size, width: icon_size, height: icon_size, href: 'assets/pencil.svg', id: 'highlight_icon' });
+  highlight_g.append('image').attrs({ x: -0.5*icon_size, y: -0.5*icon_size, width: icon_size, height: icon_size, href: '../assets/pencil.svg', id: 'highlight_icon' });
   highlight_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'highlight_icon_circle_fg' }).styles({ 'fill': 'white', 'opacity': 0 });
 
   // List icon
   var list_g = controls_g.append('g').attrs({ transform: 'translate(' +0.75*canvas_size+ ',' +160+ ')' });
   list_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'list_icon_circle_bg' });
-  list_g.append('image').attrs({ x: -0.5*icon_size, y: -0.5*icon_size, width: icon_size, height: icon_size, href: 'assets/list-empty.png', id: 'list_icon' });
+  list_g.append('image').attrs({ x: -0.5*icon_size, y: -0.5*icon_size, width: icon_size, height: icon_size, href: '../assets/list-empty.png', id: 'list_icon' });
   list_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'list_icon_circle_fg' }).styles({ 'fill': 'white', 'opacity': 0 });
 
   // Value buttons
@@ -118,26 +118,26 @@ function createControls_Events(){
 function update_controls(){
   if(guess_on == true){
     d3.select('#guess_icon_circle_bg').styles({ 'fill': '#222', 'stroke': '#222', 'stroke-width': 2 });
-    d3.select('#guess_icon').attrs({ href: 'assets/question-white.svg' });
+    d3.select('#guess_icon').attrs({ href: '../assets/question-white.svg' });
   } else {
     d3.select('#guess_icon_circle_bg').styles({ 'fill': 'white', 'stroke': '#222', 'stroke-width': 2 });
-    d3.select('#guess_icon').attrs({ href: 'assets/question.svg' });
+    d3.select('#guess_icon').attrs({ href: '../assets/question.svg' });
   }
 
   if(highlighting_allowed == true){
     d3.select('#highlight_icon_circle_bg').styles({ 'fill': '#222', 'stroke': '#222', 'stroke-width': 2 });
-    d3.select('#highlight_icon').attrs({ href: 'assets/pencil-white.svg' });
+    d3.select('#highlight_icon').attrs({ href: '../assets/pencil-white.svg' });
   } else {
     d3.select('#highlight_icon_circle_bg').styles({ 'fill': 'white', 'stroke': '#222', 'stroke-width': 2 });
-    d3.select('#highlight_icon').attrs({ href: 'assets/pencil.svg' });
+    d3.select('#highlight_icon').attrs({ href: '../assets/pencil.svg' });
   }
 
   if(show_possibilities == true){
     d3.select('#list_icon_circle_bg').styles({ 'fill': '#BBB', 'stroke': '#222', 'stroke-width': 2 });
-    d3.select('#list_icon').attrs({ href: 'assets/list-filled.png' });
+    d3.select('#list_icon').attrs({ href: '../assets/list-filled.png' });
   } else {
     d3.select('#list_icon_circle_bg').styles({ 'fill': 'white', 'stroke': '#222', 'stroke-width': 2 });
-    d3.select('#list_icon').attrs({ href: 'assets/list-empty.png' });
+    d3.select('#list_icon').attrs({ href: '../assets/list-empty.png' });
   }
 
   var temp_count = d3.range(9).map(d => { return 0 });

@@ -1,0 +1,20 @@
+SUDOKU
+
+Computation
+  - Check for Wrong entries
+  - Sudoku generation algorithm
+  - Highlight elements whose possible values show that they are occur only once in a row, column or square
+  - Save a stack(push/pop) structure to store data state at each point and allow users to undo
+  - Changing rows into columns or squares, etc.
+
+UI/UX
+  - Write a small write-up introducing features of the system
+  - Buttons: Submit, reset, new
+  - Branching when guessed
+  - Give titles to buttons
+
+Thoughts:
+  - Solving sudoku as an interaction problem
+
+Completed:
+  - Lets users guess numbers
