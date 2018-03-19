@@ -73,8 +73,16 @@ createBoard();
 var data_controls = [];
 createControls();
 
-assignSudoku(sudoku_1);
-// createSudoku();
+var temp_num_list = d3.range(sudoku_archive.length);
+
+function select_sudoku(){
+  var temp_num = math.randomInt(temp_num_list.length);
+  assignSudoku( sudoku_archive[ temp_num_list[temp_num] ] );
+  temp_num_list.splice(temp_num, 1);
+  if(temp_num_list.length == 0){ temp_num_list = d3.range(sudoku_archive.length); }
+}
+
+select_sudoku();
 update();
 
 create_Events_for_Cells();
