@@ -53,12 +53,48 @@ function check_possible_values(){
 }
 
 // ************************************************************************************** //
+// Check wrong entries
+
+function check_wrong_entries(){
+  data_cells.forEach(d => { d.conflict = false; })
+  d3.range(10).forEach((d,i) => { data_rows[i] = []; data_columns[i] = []; data_squares[i] = []; })
+
+  data_cells.forEach(d => {
+    data_rows[ d.x ].push(d);
+    data_columns[ d.y ].push(d);
+    data_squares[ d.square ].push(d);
+  })
+
+  data_rows.forEach(arr => {
+    var temp_arr = [], conflict_arr = [];
+    arr.forEach(d => { if(d.value != null){ temp_arr.push(d.value); } })
+    temp_arr.forEach(d => { if(temp_arr.indexOf(d) != temp_arr.lastIndexOf(d)){ conflict_arr.push(d); } })
+    conflict_arr.forEach(val => { arr.forEach(d => { if(d.value == val){ d.conflict = true; } }) })
+  })
+
+  data_columns.forEach(arr => {
+    var temp_arr = [], conflict_arr = [];
+    arr.forEach(d => { if(d.value != null){ temp_arr.push(d.value); } })
+    temp_arr.forEach(d => { if(temp_arr.indexOf(d) != temp_arr.lastIndexOf(d)){ conflict_arr.push(d); } })
+    conflict_arr.forEach(val => { arr.forEach(d => { if(d.value == val){ d.conflict = true; } }) })
+  })
+
+  data_squares.forEach(arr => {
+    var temp_arr = [], conflict_arr = [];
+    arr.forEach(d => { if(d.value != null){ temp_arr.push(d.value); } })
+    temp_arr.forEach(d => { if(temp_arr.indexOf(d) != temp_arr.lastIndexOf(d)){ conflict_arr.push(d); } })
+    conflict_arr.forEach(val => { arr.forEach(d => { if(d.value == val){ d.conflict = true; } }) })
+  })
+}
+
+// ************************************************************************************** //
 // Update
 
 function update(){
-  check_possible_values();
+  if(show_possibilities == true){ check_possible_values(); }
   update_controls();
 
+  check_wrong_entries();
   assign_selected_to_cells();
   assign_highlighted_to_cells();
   update_Cells();
@@ -101,6 +137,29 @@ function update_cells_possibilities(){
 function update_Cells(){
   data_cells.forEach(d => {
     d.box_text.text(d.value); // Assign the value
+
+    if(d.fixed == true && d.conflict == true){
+      d.box_bg.styles({ 'fill': 'white', 'opacity': 1 });
+      d.box_circle.styles({ 'fill': '#e8e8e8', 'opacity': 1 });
+      d.box_text.styles({ 'fill': 'black', 'opacity': 1 });
+      d.box.styles({ 'fill': 'red', 'opacity': 0.2 });
+      return
+    }
+    d.box.styles({ 'fill': 'white', 'opacity': 0 });
+
+    if(d.fixed == false && d.conflict == true && d.selected == false){
+      d.box_bg.styles({ 'fill': 'red', 'opacity': 0 });
+      d.box_circle.styles({ 'fill': 'red', 'opacity': 1 });
+      d.box_text.styles({ 'fill': 'white', 'opacity': 1 });
+      return
+    }
+
+    if(d.fixed == false && d.conflict == true && d.selected == true){
+      d.box_bg.styles({ 'fill': 'red', 'opacity': 0 });
+      d.box_circle.styles({ 'fill': '#dd9022', 'opacity': 1 });
+      d.box_text.styles({ 'fill': 'white', 'opacity': 1 });
+      return
+    }
 
     // ***************  Fixed Cells ********************* //
 

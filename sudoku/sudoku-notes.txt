@@ -1,9 +1,11 @@
 SUDOKU
 
+Thoughts:
+- Solving sudoku as an interaction problem
+
 Computation
   - Check for Wrong entries
   - Highlight elements whose possible values show that they are occur only once in a row, column or square
-  - Save a stack(push/pop) structure to store data state at each point and allow users to undo
   - Changing rows into columns or squares, etc.
   - Sudoku generation algorithm
       -- https://www.codeproject.com/Articles/23206/Sudoku-Algorithm-Generates-a-Valid-Sudoku-in
@@ -11,12 +13,10 @@ Computation
 
 UI/UX
   - Write a small write-up introducing the features and philosophy of the system
-  - Buttons: Submit, reset, new
   - Branching when guessed
 
-Thoughts:
-  - Solving sudoku as an interaction problem
-
 Completed:
+  - Buttons: Submit, reset, new
+  - Save a stack(push/pop) structure to store data state at each point and allow users to undo
   - Give titles to buttons
   - Lets users guess numbers
