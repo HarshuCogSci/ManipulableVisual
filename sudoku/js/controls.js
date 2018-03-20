@@ -104,13 +104,13 @@ function createControls_Events(){
   // Key Press events
   d3.select('body').on('keypress', function(){
     if(current_active_cell != null){
-      if(d3.event.keyCode == 48){
+      if(d3.event.charCode == 48){
         current_active_cell.value = null;
         current_active_cell = null;
         push_data();
         update();
       }
-      if(d3.event.keyCode >= 49 && d3.event.keyCode <= 57){
+      if(d3.event.charCode >= 49 && d3.event.charCode <= 57){
         current_active_cell.value = parseInt(d3.event.key);
         current_active_cell = null;
         push_data();
