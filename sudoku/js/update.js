@@ -193,7 +193,7 @@ function update_Cells(){
 
     // ***************  Empty Cells ********************* //
 
-    if(d.value == null && show_possibilities == true && current_highlighting_value != null && d.possible_values.indexOf(current_highlighting_value) != -1 && d.selected == false){
+    if(d.value == null && show_possibilities == true && highlighting_allowed == false && current_highlighting_value != null && d.possible_values.indexOf(current_highlighting_value) != -1 && d.selected == false){
       d.box_bg.styles({ 'fill': 'white', 'opacity': 1 });
       d.box_circle.styles({ 'fill': 'steelblue', 'opacity': 0.2 });
       d.box_text.styles({ 'fill': 'white', 'opacity': 1 });

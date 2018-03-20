@@ -4,7 +4,6 @@ Thoughts:
 - Solving sudoku as an interaction problem
 
 Computation
-  - Check for Wrong entries
   - Highlight elements whose possible values show that they are occur only once in a row, column or square
   - Changing rows into columns or squares, etc.
   - Sudoku generation algorithm
@@ -16,6 +15,7 @@ UI/UX
   - Branching when guessed
 
 Completed:
+  - Check for Wrong entries
   - Buttons: Submit, reset, new
   - Save a stack(push/pop) structure to store data state at each point and allow users to undo
   - Give titles to buttons

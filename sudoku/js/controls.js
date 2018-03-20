@@ -21,6 +21,8 @@ function createControls(){
     data_controls.push(temp_data);
   }
 
+  data_controls[9].controls_text.attrs({ y: 90 });
+
   // Guess icon
   var guess_g = controls_g.append('g').attrs({ transform: 'translate(' +0.2*canvas_size+ ',' +160+ ')' });
   guess_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'guess_icon_circle_bg' });
@@ -103,7 +105,7 @@ function createControls_Events(){
 
   // Key Press events
   d3.select('body').on('keypress', function(){
-    if(current_active_cell != null){
+    if(current_active_cell != null && guess_on == false){
       if(d3.event.charCode == 48){
         current_active_cell.value = null;
         current_active_cell = null;
@@ -117,6 +119,18 @@ function createControls_Events(){
         update();
       }
     }
+
+    if(current_active_cell != null && guess_on == true){
+      if(d3.event.charCode == 48){ current_active_cell.guesses = []; }
+      if(d3.event.charCode >= 49 && d3.event.charCode <= 57){
+        if(current_active_cell.guesses.indexOf(d3.event.key) == -1){ current_active_cell.guesses.push(d3.event.key); }
+        else{ current_active_cell.guesses.splice(current_active_cell.guesses.indexOf(d3.event.key), 1); }
+      }
+      current_active_cell = null;
+      update();
+      return
+    }
+
   })
 
   // Guess icon
@@ -129,7 +143,7 @@ function createControls_Events(){
   // Highlight icon
   d3.select('#highlight_icon_circle_fg').on('click', function(){
     highlighting_allowed = !highlighting_allowed;
-    current_highlighting_value = null;
+    // current_highlighting_value = null;
     update();
   })
 
@@ -192,4 +206,5 @@ function update_controls(){
   var temp_count = d3.range(9).map(d => { return 0 });
   data_cells.forEach(d => { if(d.value != null){ temp_count[d.value-1]++; } })
   temp_count.forEach((d,i) => { data_controls[i].controls_text_count.text(9-d); });
+  data_controls[9].controls_text_count.text(null);
 }
