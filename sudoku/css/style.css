@@ -7,9 +7,6 @@ body {
 
 /* Value buttons */
 .controls_bg {
-  -webkit-filter: drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.5));
-  -webkit-user-filter: drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.5));
-  filter: drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.5));
-
+  filter: drop-shadow(8px 8px 5px rgba(0, 0, 0, 0.5));
   fill: #DDD; stroke: gray;
 }
