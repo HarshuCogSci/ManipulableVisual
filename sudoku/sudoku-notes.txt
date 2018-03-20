@@ -10,13 +10,13 @@ Computation
       -- https://gamedev.stackexchange.com/questions/56149/how-can-i-generate-sudoku-puzzles
 
 UI/UX
-  - Write a small write-up introducing features of the system
+  - Write a small write-up introducing the features and philosophy of the system
   - Buttons: Submit, reset, new
   - Branching when guessed
-  - Give titles to buttons
 
 Thoughts:
   - Solving sudoku as an interaction problem
 
 Completed:
+  - Give titles to buttons
   - Lets users guess numbers

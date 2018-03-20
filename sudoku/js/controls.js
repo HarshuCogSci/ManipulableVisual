@@ -6,24 +6,6 @@ function createControls(){
   var controls_g = d3.select('#canvas').append('g').attrs({ 'transform': 'translate(' +50+ ',' +(canvas_size+50+20)+ ')' });
   var icon_size = 30;
 
-  // Guess icon
-  var guess_g = controls_g.append('g').attrs({ transform: 'translate(' +0.25*canvas_size+ ',' +160+ ')' });
-  guess_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'guess_icon_circle_bg' });
-  guess_g.append('image').attrs({ x: -0.5*icon_size, y: -0.5*icon_size, width: icon_size, height: icon_size, href: '../assets/question.svg', id: 'guess_icon' });
-  guess_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'guess_icon_circle_fg' }).styles({ 'fill': 'white', 'opacity': 0 });
-
-  // Highlight icon
-  var highlight_g = controls_g.append('g').attrs({ transform: 'translate(' +0.5*canvas_size+ ',' +160+ ')' });
-  highlight_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'highlight_icon_circle_bg' });
-  highlight_g.append('image').attrs({ x: -0.5*icon_size, y: -0.5*icon_size, width: icon_size, height: icon_size, href: '../assets/pencil.svg', id: 'highlight_icon' });
-  highlight_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'highlight_icon_circle_fg' }).styles({ 'fill': 'white', 'opacity': 0 });
-
-  // List icon
-  var list_g = controls_g.append('g').attrs({ transform: 'translate(' +0.75*canvas_size+ ',' +160+ ')' });
-  list_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'list_icon_circle_bg' });
-  list_g.append('image').attrs({ x: -0.5*icon_size, y: -0.5*icon_size, width: icon_size, height: icon_size, href: '../assets/list-empty.png', id: 'list_icon' });
-  list_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'list_icon_circle_fg' }).styles({ 'fill': 'white', 'opacity': 0 });
-
   // Value buttons
   for(var i = 1; i <= 10; i++){
     var temp_y = i <= 5 ? 30 : 90;
@@ -39,6 +21,48 @@ function createControls(){
     data_controls.push(temp_data);
   }
 
+  // Guess icon
+  var guess_g = controls_g.append('g').attrs({ transform: 'translate(' +0.2*canvas_size+ ',' +160+ ')' });
+  guess_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'guess_icon_circle_bg' });
+  guess_g.append('image').attrs({ x: -0.5*icon_size, y: -0.5*icon_size, width: icon_size, height: icon_size, href: '../assets/question.svg', id: 'guess_icon' });
+  guess_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'guess_icon_circle_fg' }).styles({ 'fill': 'white', 'opacity': 0 });
+  guess_g.append('text').attrs({ x: 0, y: 1.3*icon_size }).styles({ 'dominant-baseline': 'middle', 'text-anchor': 'middle', 'font-size': '1em', 'fill': 'gray' }).text('Guess');
+
+  // Highlight icon
+  var highlight_g = controls_g.append('g').attrs({ transform: 'translate(' +0.5*canvas_size+ ',' +160+ ')' });
+  highlight_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'highlight_icon_circle_bg' });
+  highlight_g.append('image').attrs({ x: -0.5*icon_size, y: -0.5*icon_size, width: icon_size, height: icon_size, href: '../assets/pencil.svg', id: 'highlight_icon' });
+  highlight_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'highlight_icon_circle_fg' }).styles({ 'fill': 'white', 'opacity': 0 });
+  highlight_g.append('text').attrs({ x: 0, y: 1.3*icon_size }).styles({ 'dominant-baseline': 'middle', 'text-anchor': 'middle', 'font-size': '1em', 'fill': 'gray' }).text('Highlight Cells');
+
+  // List icon
+  var list_g = controls_g.append('g').attrs({ transform: 'translate(' +0.8*canvas_size+ ',' +160+ ')' });
+  list_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'list_icon_circle_bg' });
+  list_g.append('image').attrs({ x: -0.5*icon_size, y: -0.5*icon_size, width: icon_size, height: icon_size, href: '../assets/list-empty.png', id: 'list_icon' });
+  list_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'list_icon_circle_fg' }).styles({ 'fill': 'white', 'opacity': 0 });
+  list_g.append('text').attrs({ x: 0, y: 1.3*icon_size }).styles({ 'dominant-baseline': 'middle', 'text-anchor': 'middle', 'font-size': '1em', 'fill': 'gray' }).text('Possible Values');
+
+  // Undo icon
+  var undo_g = controls_g.append('g').attrs({ transform: 'translate(' +0.25*canvas_size+ ',' +260+ ')' });
+  undo_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'undo_icon_circle_bg' }).styles({ 'fill': 'white', 'stroke': '#222', 'stroke-width': 2 });
+  undo_g.append('image').attrs({ x: -0.5*icon_size, y: -0.5*icon_size, width: icon_size, height: icon_size, href: '../assets/undo-alt.svg', id: 'undo_icon' });
+  undo_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'undo_icon_circle_fg' }).styles({ 'fill': 'white', 'opacity': 0 });
+  undo_g.append('text').attrs({ x: 0, y: 1.3*icon_size }).styles({ 'dominant-baseline': 'middle', 'text-anchor': 'middle', 'font-size': '1em', 'fill': 'gray' }).text('Undo');
+
+  // Reset icon
+  var reset_g = controls_g.append('g').attrs({ transform: 'translate(' +0.5*canvas_size+ ',' +260+ ')' });
+  reset_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'reset_icon_circle_bg' }).styles({ 'fill': 'white', 'stroke': '#222', 'stroke-width': 2 });
+  reset_g.append('image').attrs({ x: -0.5*icon_size, y: -0.5*icon_size, width: icon_size, height: icon_size, href: '../assets/reset-alt.svg', id: 'reset_icon' });
+  reset_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'reset_icon_circle_fg' }).styles({ 'fill': 'white', 'opacity': 0 });
+  reset_g.append('text').attrs({ x: 0, y: 1.3*icon_size }).styles({ 'dominant-baseline': 'middle', 'text-anchor': 'middle', 'font-size': '1em', 'fill': 'gray' }).text('Reset');
+
+  // New icon
+  var new_g = controls_g.append('g').attrs({ transform: 'translate(' +0.75*canvas_size+ ',' +260+ ')' });
+  new_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'new_icon_circle_bg' }).styles({ 'fill': 'white', 'stroke': '#222', 'stroke-width': 2 });
+  new_g.append('image').attrs({ x: -0.5*icon_size, y: -0.5*icon_size, width: icon_size, height: icon_size, href: '../assets/new-alt.svg', id: 'new_icon' });
+  new_g.append('circle').attrs({ cx: 0, cy: 0, r: 0.8*icon_size, id: 'new_icon_circle_fg' }).styles({ 'fill': 'white', 'opacity': 0 });
+  new_g.append('text').attrs({ x: 0, y: 1.3*icon_size }).styles({ 'dominant-baseline': 'middle', 'text-anchor': 'middle', 'font-size': '1em', 'fill': 'gray' }).text('New');
+
   var lastNode = data_controls[ data_controls.length-1 ];
   lastNode.value = 'X'; lastNode.controls_text.text('X');
 }
@@ -53,6 +77,7 @@ function createControls_Events(){
     if(current_active_cell != null && guess_on == false){
       current_active_cell.value = d.value == 'X' ? null : d.value;
       current_active_cell = null;
+      push_data();
       update();
       return
     }
@@ -61,6 +86,7 @@ function createControls_Events(){
       if(current_active_cell.guesses.indexOf(d.value) == -1){ current_active_cell.guesses.push(d.value); }
       else{ current_active_cell.guesses.splice(current_active_cell.guesses.indexOf(d.value), 1); }
       if(d.value == 'X'){ current_active_cell.guesses = []; }
+      current_active_cell = null;
       update();
       return
     }
@@ -81,11 +107,13 @@ function createControls_Events(){
       if(d3.event.keyCode == 48){
         current_active_cell.value = null;
         current_active_cell = null;
+        push_data();
         update();
       }
       if(d3.event.keyCode >= 49 && d3.event.keyCode <= 57){
         current_active_cell.value = parseInt(d3.event.key);
         current_active_cell = null;
+        push_data();
         update();
       }
     }
@@ -110,6 +138,19 @@ function createControls_Events(){
     guess_on = false;
     update();
   })
+
+  d3.select('#undo_icon_circle_fg').on('click', function(){
+    pop_data();
+  })
+
+  d3.select('#reset_icon_circle_fg').on('click', function(){
+    reset();
+  })
+
+  d3.select('#new_icon_circle_fg').on('click', function(){
+    select_sudoku();
+  })
+
 }
 
 // ************************************************************************************** //
@@ -140,8 +181,15 @@ function update_controls(){
     d3.select('#list_icon').attrs({ href: '../assets/list-empty.png' });
   }
 
+  if(user_data.length > 1){
+    d3.select('#undo_icon').attrs({ href: '../assets/undo-alt.svg' });
+    d3.select('#undo_icon_circle_bg').styles({ 'fill': 'white', 'stroke': '#222', 'stroke-width': 2 });
+  } else{
+    d3.select('#undo_icon').attrs({ href: '../assets/undo-gray.svg' });
+    d3.select('#undo_icon_circle_bg').styles({ 'fill': 'white', 'stroke': 'gray', 'stroke-width': 2 });
+  }
+
   var temp_count = d3.range(9).map(d => { return 0 });
-  // console.log(temp_count);
   data_cells.forEach(d => { if(d.value != null){ temp_count[d.value-1]++; } })
   temp_count.forEach((d,i) => { data_controls[i].controls_text_count.text(9-d); });
 }
