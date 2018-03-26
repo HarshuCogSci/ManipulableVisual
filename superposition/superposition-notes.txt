@@ -1,0 +1,5 @@
+SUPERPOSITION
+
+Goal:
+  - Linking waves and the phasor representation
+  - Look at moving waves to understand the difference between phase velocity and group velocity
