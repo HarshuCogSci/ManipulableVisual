@@ -1,7 +1,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-  <title>Turbine Simulation</title>
+  <title>Symmetry Drawing</title>
   <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0"/>
 <script src = "../Libraries/d3.v4.min.js"></script>
 <script src = "../Libraries/math.min.js"></script>
@@ -16,7 +16,7 @@
 
 //****************************************************************************************************************************//
 //	Canvas
-  
+
 d3.select("body")
   .append("svg")
   .attr("id", "canvas")
@@ -108,7 +108,7 @@ drag.on("drag", function(){
 // 	d3.select("#canvas").on("mousemove", function(){
 // 		x = (d3.event.x - 0.5*innerWidth);
 // 		y = (d3.event.y - 0.5*innerHeight);
-		
+
 // 		r = Math.sqrt(x*x + y*y);
 // 		ang = Math.atan2(-y,x);
 
@@ -123,7 +123,7 @@ drag.on("drag", function(){
 // 				.attr("r", 2)
 // 				.style("fill", "lightblue")
 // 				.style("stroke", "none");
-			
+
 // 		}
 
 // 	})
@@ -140,7 +140,7 @@ drag.on("drag", function(){
 
 // 	x = (d3.event.targetTouches[0].clientX - 0.5*innerWidth);
 // 	y = (d3.event.targetTouches[0].clientY - 0.5*innerHeight);
-	
+
 // 	r = Math.sqrt(x*x + y*y);
 // 	ang = Math.atan2(-y,x);
 
@@ -155,7 +155,7 @@ drag.on("drag", function(){
 // 			.attr("r", 2)
 // 			.style("fill", "lightblue")
 // 			.style("stroke", "none");
-		
+
 // 	}
 
 // })
