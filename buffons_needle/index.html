@@ -1,6 +1,141 @@
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-  <title>Area of a circle visualization</title>
+  <title>BUFFONS NEEDLES</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="index.css">
+  
+   
 </head>
+
+<body>
+  <div class="image"></div>
+  <div class= "container">
+   <h1> BUFFONS NEEDLES </h1>
+   <p id="pm">
+Buffon's Needle is one of the oldest problems in the field of geometrical probability. It was first stated in 1777. It involves dropping a needle on a lined sheet of paper and determining the probability of the needle crossing one of the lines on the page. The remarkable result is that the probability is directly related to the value of pi.
+
+This pages will present an analytical solution to the problem along with a JavaScript applet for simulating the needle drop in the simplest case scenario in which the length of the needle is the same as the distance between the lines.</p>
+      <div class="row">
+      
+      <div class="col-sm-6" >
+      <svg id="needle_svg" width='300' height='300'>
+       <!--border-->
+       
+       <line x1="0" x2="300" y1="0" y2="00" stroke="#00ACE9" stroke-width="4" stroke-linecap="butt"/>
+       <line x1="0" x2="300" y1="300" y2="300" stroke="#00ACE9" stroke-width="4" stroke-linecap="butt"/>
+       <line x1="0" x2="0" y1="0" y2="300" stroke="#00ACE9" stroke-width="4" stroke-linecap="butt"/>
+       <line x1="300" x2="300" y1="00" y2="300" stroke="#00ACE9" stroke-width="4" stroke-linecap="butt"/>
+       
+        <!--crosssing Lines-->
+        <line x1="0" x2="300" y1="100" y2="100" stroke="orange" stroke-width="1.5" stroke-linecap="butt"/>
+        <line x1="0" x2="300" y1="200" y2="200" stroke="orange" stroke-width="1.5" stroke-linecap="butt"/>
+          </svg>
+          </div>
+      
+          
+    <div class="col-sm-6" > 
+    <!--displaying result -->
+    <br>
+    <p class= "p1" id='r1'>Total no. of needeles dropped :  </p>
+    <br>
+    <p class= "p1" id='r2'>Total intersection : </p>
+    <br>
+    <p class= "p1" id='r3'> &#928 &#8776    </p>
+    <br>
+    </div>
+      </div>
+      
+      <br>
+      <br>
+     <div class="row" id="z1">
+     <div class="col-sm-6">
+             <!-- instruction for buttons-->
+     <p class="para" >Click on buttons to drop needles</p>
+         <button class="btn" onclick="input0()"  value=10>10</button>&nbsp;&nbsp;
+    <button class="btn" onclick="input1()"  value=100>100</button>&nbsp;&nbsp;
+    <button class="btn" onclick="input2()"  value=1000>1000</button>&nbsp;&nbsp;
+        
+         </div>
+        
+     <div class="col-sm-6">
+   
+     <p class="para">Enter the number of needles</p>
+        <input id="drop" type='number' min="0" step="1" >
+    <button onclick="input3()" >Drop</button>
+         </div>
+      </div>
+   
+    
+    
+      <br>
+      <br>
+      <br>
+   
+     
+    
+   
+    
+   <div class="row">
+    <div class="col-sm-6">
+       <p  id="l"> Click START to auto drop &nbsp<input type="number" id="y" min="0" step="1">&nbsp needles every 0.5 sec </p>
+       </div>
+    
+    
+    
+    
+    
+    <div class="col-sm-6">
+    
+
+    <button id="btnR" onclick="Animate()" > START </button>
+    <button id="btnS" onclick="timer.stop()" > STOP </button>
+    <button id="clr"  onclick="erase()" > CLEAR </button>
+        </div>
+      </div>
+    
+    
+   
+    <!-- including graph....-->
+    
+    <div class="row">
+    <div class="col-sm-12">
+    <div id="graph"> </div>
+    
+        </div>
+      </div>
+    </div> <! container closed> 
+    
+    
+    
+    
+    
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="misc.js"></script>
+    <script src="needle.js"></script>
+    <script src="canvas.js"></script>
+    <script src="input.js"></script>
+    <script src="result.js"></script>
+    <script src="plot.js"></script>
+    <script src="timer.js"></script>
+    <script src="index.js"></script>
+    <script>plot();</script>
+
+        
+     
+    
+    
+   
+    
+</body>
+</html>
+    
